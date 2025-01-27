@@ -13,6 +13,16 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
+//get all Proudcts
+const getAllProductsFromDB = async () => {
+  const result = await Product.find({ isDeleted: false });
+  if (result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Product Found');
+  }
+  return result;
+};
+
 export const ProductServices = {
   createProductIntoDB,
+  getAllProductsFromDB,
 };

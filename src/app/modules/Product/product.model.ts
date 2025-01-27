@@ -9,6 +9,7 @@ const productSchema = new Schema<TProduct>(
     stockQuantity: { type: Number, required: true },
     category: { type: String, required: true },
     productImages: { type: [String], required: true },
+    isDeleted: { type: Boolean, default: false },
   },
   {
     timestamps: true,

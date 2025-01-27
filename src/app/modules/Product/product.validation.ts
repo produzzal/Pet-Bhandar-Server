@@ -13,6 +13,7 @@ const productValidationSchema = z.object({
     productImages: z
       .array(z.string())
       .min(1, 'At least one product image is required'),
+    isDeleted: z.boolean().optional(),
   }),
 });
 
