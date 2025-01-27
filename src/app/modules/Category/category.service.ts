@@ -13,6 +13,16 @@ const createCategoryToDB = async (payload: TCategory) => {
   return category;
 };
 
+//get all Products
+const getAllCategoriesFromDB = async () => {
+  const result = await Category.find({ isDeleted: false });
+  if (result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Category Found');
+  }
+  return result;
+};
+
 export const CategoryServices = {
   createCategoryToDB,
+  getAllCategoriesFromDB,
 };
