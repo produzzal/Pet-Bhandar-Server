@@ -18,4 +18,11 @@ router.get('/', ProductControllers.getAllProducts);
 
 router.get('/:id', ProductControllers.getSingleProduct);
 
+router.put(
+  '/:id',
+  auth(USER_ROLE.admin),
+  validateRequest(ProductValidations.updateProductValidationSchema),
+  ProductControllers.updateProduct,
+);
+
 export const ProductRoutes = router;

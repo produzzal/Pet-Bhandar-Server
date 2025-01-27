@@ -31,8 +31,28 @@ const getSingleProductFromDB = async (id: string) => {
   return result;
 };
 
+//update Product
+const updateProductIntoDB = async (payload: TProduct, id: string) => {
+  const product = await Product.findOne({
+    _id: id,
+    isDeleted: false,
+  });
+
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No product Found');
+  }
+  const result = await Product.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Product Found');
+  }
+  return result;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
+  updateProductIntoDB,
 };
