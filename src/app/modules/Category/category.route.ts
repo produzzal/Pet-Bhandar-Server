@@ -17,4 +17,11 @@ router.get('/', CategoryControllers.getAllCategories);
 
 router.get('/:id', CategoryControllers.getSingleCategory);
 
+router.put(
+  '/:id',
+  auth(USER_ROLE.admin),
+  validateRequest(CategoryValidation.updateCategoryValidationSchema),
+  CategoryControllers.updateCategory,
+);
+
 export const CategoryRoutes = router;
