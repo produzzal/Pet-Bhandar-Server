@@ -13,7 +13,7 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
-//get all Proudcts
+//get all Products
 const getAllProductsFromDB = async () => {
   const result = await Product.find({ isDeleted: false });
   if (result.length === 0) {

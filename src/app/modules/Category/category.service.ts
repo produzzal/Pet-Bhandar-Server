@@ -22,7 +22,55 @@ const getAllCategoriesFromDB = async () => {
   return result;
 };
 
+//get single Category
+const getSingleCategoryFromDB = async (id: string) => {
+  const result = await Category.findOne({ _id: id, isDeleted: false });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Category Found');
+  }
+  return result;
+};
+
+//update Product
+const updateCategoryIntoDB = async (payload: TCategory, id: string) => {
+  const category = await Category.findOne({
+    _id: id,
+    isDeleted: false,
+  });
+
+  if (!category) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Category Found');
+  }
+  const result = await Category.findByIdAndUpdate(id, payload, {
+    new: true,
+  });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Category Found');
+  }
+  return result;
+};
+
+//delete Category
+const deleteCategoryFromDB = async (id: string) => {
+  const category = await Category.findOne({ _id: id, isDeleted: false });
+  if (!category) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Category Found');
+  }
+  const result = await Category.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Category Found');
+  }
+  return result;
+};
+
 export const CategoryServices = {
   createCategoryToDB,
   getAllCategoriesFromDB,
+  getSingleCategoryFromDB,
+  updateCategoryIntoDB,
+  deleteCategoryFromDB,
 };
