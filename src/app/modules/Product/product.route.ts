@@ -25,4 +25,6 @@ router.put(
   ProductControllers.updateProduct,
 );
 
+router.delete('/:id', auth(USER_ROLE.admin), ProductControllers.deleteProduct);
+
 export const ProductRoutes = router;

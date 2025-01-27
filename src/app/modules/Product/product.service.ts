@@ -50,9 +50,27 @@ const updateProductIntoDB = async (payload: TProduct, id: string) => {
   return result;
 };
 
+//delete Product
+const deleteProductFromDB = async (id: string) => {
+  const product = await Product.findOne({ _id: id, isDeleted: false });
+  if (!product) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Data Found');
+  }
+  const result = await Product.findByIdAndUpdate(
+    id,
+    { isDeleted: true },
+    { new: true },
+  );
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Product Found');
+  }
+  return result;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
   getSingleProductFromDB,
   updateProductIntoDB,
+  deleteProductFromDB,
 };
