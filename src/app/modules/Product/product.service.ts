@@ -22,7 +22,17 @@ const getAllProductsFromDB = async () => {
   return result;
 };
 
+//get single Product
+const getSingleProductFromDB = async (id: string) => {
+  const result = await Product.findOne({ _id: id, isDeleted: false });
+  if (!result) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Product Found');
+  }
+  return result;
+};
+
 export const ProductServices = {
   createProductIntoDB,
   getAllProductsFromDB,
+  getSingleProductFromDB,
 };
