@@ -43,6 +43,22 @@ const createOrderIntoDB = async (orderData: TOrder) => {
   return order;
 };
 
+const updateOrderStatusFromDB = async (orderId: string, status: string) => {
+  // Update the order status using findByIdAndUpdate
+  const updatedOrder = await Order.findByIdAndUpdate(
+    orderId,
+    { status },
+    { new: true },
+  );
+
+  if (!updatedOrder) {
+    throw new AppError(404, 'Order not found');
+  }
+
+  return updatedOrder;
+};
+
 export const OrderServices = {
   createOrderIntoDB,
+  updateOrderStatusFromDB,
 };

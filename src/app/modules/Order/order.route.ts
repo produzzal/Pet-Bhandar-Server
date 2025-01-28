@@ -14,4 +14,11 @@ router.post(
   OrderControllers.createOrder,
 );
 
+router.put(
+  '/:id',
+  auth(USER_ROLE.admin),
+  validateRequest(OrderValidations.updateStatusValidationSchema),
+  OrderControllers.updateOrderStatus,
+);
+
 export const OrderRoutes = router;

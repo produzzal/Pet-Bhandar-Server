@@ -16,6 +16,22 @@ const createOrder = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const updateOrderStatus = catchAsync(async (req: Request, res: Response) => {
+  const { status } = req.body;
+  const { id } = req.params;
+
+  // Call the service to update the order status
+  const updatedOrder = await OrderServices.updateOrderStatusFromDB(id, status);
+
+  // Send response with the updated order
+  return res.status(200).json({
+    success: true,
+    message: 'Order status updated successfully',
+    data: updatedOrder,
+  });
+});
+
 export const OrderControllers = {
   createOrder,
+  updateOrderStatus,
 };
