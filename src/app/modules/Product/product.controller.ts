@@ -16,9 +16,16 @@ const createProduct = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-//get all rooms
+// Get all products with search and category filters
 const getAllProducts = catchAsync(async (req: Request, res: Response) => {
-  const result = await ProductServices.getAllProductsFromDB();
+  const { search = '', category = 'all' } = req.query;
+
+  // Call the service with the query parameters
+  const result = await ProductServices.getAllProductsFromDB(
+    search as string,
+    category as string,
+  );
+
   sendResponse(res, {
     success: true,
     statusCode: httpStatus.OK,

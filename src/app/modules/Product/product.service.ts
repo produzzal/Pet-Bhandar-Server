@@ -13,12 +13,26 @@ const createProductIntoDB = async (payload: TProduct) => {
   return result;
 };
 
-//get all Products
-const getAllProductsFromDB = async () => {
-  const result = await Product.find({ isDeleted: false });
-  if (result.length === 0) {
-    throw new AppError(httpStatus.NOT_FOUND, 'No Product Found');
+// Get all products with optional search and category filters
+const getAllProductsFromDB = async (search: string, category: string) => {
+  let filter: any = { isDeleted: false };
+
+  // Apply search filter (case-insensitive)
+  if (search) {
+    filter.name = { $regex: search, $options: 'i' };
   }
+
+  // Apply category filter (only if category is provided)
+  if (category && category !== 'all') {
+    filter.category = category;
+  }
+
+  const result = await Product.find(filter);
+
+  if (result.length === 0) {
+    throw new AppError(httpStatus.NOT_FOUND, 'No Products Found');
+  }
+
   return result;
 };
 
