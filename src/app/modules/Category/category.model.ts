@@ -5,6 +5,7 @@ import { TCategory } from './category.interface';
 const categorySchema = new Schema<TCategory>(
   {
     name: { type: String, required: true },
+    image: { type: String, reqired: true },
     description: { type: String, required: true },
     isDeleted: { type: Boolean, default: false },
   },

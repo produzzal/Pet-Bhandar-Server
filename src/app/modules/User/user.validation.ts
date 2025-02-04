@@ -7,21 +7,30 @@ const UserValidationSchema = z.object({
     email: z.string().email({ message: 'Invalid email address' }).trim(),
     password: z
       .string()
-      .min(8, { message: 'Password must be at least 8 characters' })
+      .min(6, { message: 'Password must be at least 6 characters' })
       .trim(),
     phone: z.string().min(1, { message: 'Phone number is required' }).trim(),
-    address: z.string().min(1, { message: 'Address is required' }).trim(),
+    address: z.string().optional(),
+    role: z
+      .nativeEnum(USER_ROLE, {
+        message: "Role must be either 'admin' or 'user'",
+      })
+      .default(USER_ROLE.user),
+
+    profilePicture: z.string().optional(),
+    isActive: z.boolean().optional(),
+  }),
+});
+
+export const UpdateUserRoleValidationSchema = z.object({
+  body: z.object({
     role: z.nativeEnum(USER_ROLE, {
       message: "Role must be either 'admin' or 'user'",
     }),
-    profilePicture: z
-      .string()
-      .url({ message: 'Invalid URL for profile picture' })
-      .optional(),
-    isActive: z.boolean().optional(),
   }),
 });
 
 export const UserValidation = {
   UserValidationSchema,
+  UpdateUserRoleValidationSchema,
 };

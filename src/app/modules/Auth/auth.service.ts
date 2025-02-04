@@ -1,14 +1,13 @@
 import httpStatus from 'http-status';
 import { TUser } from '../User/user.interface';
 import { User } from '../User/user.model';
-
 import { TLoginUser } from './auth.interface';
 import jwt from 'jsonwebtoken';
 import config from '../../config';
 import AppError from '../../errors/AppError';
 import bcrypt from 'bcrypt';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// Signup functionality remains the same
 const signup = async (payload: TUser): Promise<any> => {
   const user = await User.findOne({ email: payload.email });
 
@@ -20,6 +19,7 @@ const signup = async (payload: TUser): Promise<any> => {
   return newUser;
 };
 
+// Login functionality remains the same
 const login = async (payload: TLoginUser) => {
   const user = await User.findOne({ email: payload.email }).select('+password');
 

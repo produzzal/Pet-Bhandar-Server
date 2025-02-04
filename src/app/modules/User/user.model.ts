@@ -11,8 +11,8 @@ const userSchema = new Schema<TUser>(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true, select: false },
     phone: { type: String, required: true },
-    address: { type: String, required: true },
-    role: { type: String, required: true, enum: Object.keys(USER_ROLE) },
+    address: { type: String },
+    role: { type: String, enum: Object.keys(USER_ROLE), default: 'user' },
     profilePicture: {
       type: String,
       default: 'https://i.ibb.co.com/rd4JYZ8/images.png',
