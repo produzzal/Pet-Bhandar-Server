@@ -13,7 +13,9 @@ router.post(
   cartControllers.addToCart,
 );
 
-router.get('/:userId', cartControllers.getUserCartItems);
+router.get('/', cartControllers.getUserCartItems);
 
-router.patch('/:userId', cartControllers.updateCartItem);
+router.patch('/', cartControllers.updateCartItem);
+
+router.delete('/', cartControllers.deleteCartItem);
 export const CartRoutes = router;

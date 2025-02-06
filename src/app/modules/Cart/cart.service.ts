@@ -89,8 +89,22 @@ const updateCartItem = async (
     throw new AppError(httpStatus.BAD_REQUEST, 'Not enough stock available');
   }
 
+  // Make sure to update the quantity only for the correct user and product
   cartItem.quantity = newQuantity;
   await cartItem.save();
+
+  return cartItem;
+};
+
+const deleteCartItemFromDB = async (user: string, product: string) => {
+  const cartItem = await Cart.findOneAndDelete({
+    user,
+    product,
+  });
+
+  if (!cartItem) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Cart item not found');
+  }
 
   return cartItem;
 };
@@ -99,4 +113,5 @@ export const cartServices = {
   addToCart,
   getUserCartFromDB,
   updateCartItem,
+  deleteCartItemFromDB,
 };

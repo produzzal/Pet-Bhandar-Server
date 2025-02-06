@@ -15,9 +15,9 @@ const addToCart = catchAsync(async (req: Request, res: Response) => {
 });
 
 const getUserCartItems = catchAsync(async (req: Request, res: Response) => {
-  const userId = req.params.userId;
+  const { user } = req.body;
 
-  const cartItems = await cartServices.getUserCartFromDB(userId);
+  const cartItems = await cartServices.getUserCartFromDB(user);
 
   sendResponse(res, {
     success: true,
@@ -28,11 +28,10 @@ const getUserCartItems = catchAsync(async (req: Request, res: Response) => {
 });
 
 const updateCartItem = catchAsync(async (req: Request, res: Response) => {
-  const { product, quantity } = req.body;
-  const userId = req.params.userId; // Assuming userId is in params
+  const { user, product, quantity } = req.body;
 
   const updatedCartItem = await cartServices.updateCartItem(
-    userId,
+    user,
     product,
     quantity,
   );
@@ -45,8 +44,21 @@ const updateCartItem = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const deleteCartItem = catchAsync(async (req: Request, res: Response) => {
+  const { user, product } = req.body;
+  const cart = await cartServices.deleteCartItemFromDB(user, product);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'Cart item deleted successfully',
+    data: cart,
+  });
+});
+
 export const cartControllers = {
   addToCart,
   getUserCartItems,
   updateCartItem,
+  deleteCartItem,
 };
