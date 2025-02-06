@@ -8,6 +8,15 @@ const addToCartValidationSchema = z.object({
     quantity: z.number().min(1, 'Quantity is required').default(1),
   }),
 });
+
+const updateItemsValidationSchema = z.object({
+  body: z.object({
+    user: z.string().optional(),
+    product: z.string().min(1, 'Product Id is required').optional(),
+    quantity: z.number().min(1, 'Quantity is required'),
+  }),
+});
 export const cartValidationsSchema = {
   addToCartValidationSchema,
+  updateItemsValidationSchema,
 };

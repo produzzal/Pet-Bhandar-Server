@@ -15,4 +15,5 @@ router.post(
 
 router.get('/:userId', cartControllers.getUserCartItems);
 
+router.patch('/:userId', cartControllers.updateCartItem);
 export const CartRoutes = router;

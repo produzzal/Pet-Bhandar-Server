@@ -63,7 +63,40 @@ const getUserCartFromDB = async (userId: string) => {
   return cartItems;
 };
 
+const updateCartItem = async (
+  userId: string,
+  productId: string,
+  quantityChange: number, // This can be positive (increase) or negative (decrease)
+) => {
+  const cartItem = await Cart.findOne({ user: userId, product: productId });
+
+  if (!cartItem) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Cart item not found');
+  }
+
+  const productInDB = await Product.findById(productId);
+  if (!productInDB) {
+    throw new AppError(httpStatus.NOT_FOUND, 'Product not found');
+  }
+
+  const newQuantity = cartItem.quantity + quantityChange;
+
+  if (newQuantity < 1) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Quantity must be at least 1');
+  }
+
+  if (newQuantity > productInDB.stockQuantity) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'Not enough stock available');
+  }
+
+  cartItem.quantity = newQuantity;
+  await cartItem.save();
+
+  return cartItem;
+};
+
 export const cartServices = {
   addToCart,
   getUserCartFromDB,
+  updateCartItem,
 };
