@@ -13,4 +13,6 @@ router.post(
   cartControllers.addToCart,
 );
 
+router.get('/:userId', cartControllers.getUserCartItems);
+
 export const CartRoutes = router;

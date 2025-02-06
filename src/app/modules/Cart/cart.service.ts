@@ -27,10 +27,43 @@ const addToCart = async (cartData: TCart) => {
     );
   }
 
+  // Check if the product is already in the user's cart
+  const existingCartItem = await Cart.findOne({
+    user: userId,
+    product: productId,
+  });
+
+  if (existingCartItem) {
+    // Update the quantity
+    existingCartItem.quantity += quantity;
+
+    if (existingCartItem.quantity > productInDB.stockQuantity) {
+      throw new AppError(
+        httpStatus.BAD_REQUEST,
+        'Not enough stock for this Product ',
+      );
+    }
+
+    await existingCartItem.save();
+    return existingCartItem;
+  }
+
+  // If product is not in the cart, create a new cart item
   const cartItem = await Cart.create(cartData);
   return cartItem;
 };
 
+const getUserCartFromDB = async (userId: string) => {
+  const cartItems = await Cart.find({ user: userId }).populate('product');
+
+  if (!cartItems || cartItems.length === 0) {
+    throw new AppError(httpStatus.BAD_REQUEST, 'No products found in cart');
+  }
+
+  return cartItems;
+};
+
 export const cartServices = {
   addToCart,
+  getUserCartFromDB,
 };
