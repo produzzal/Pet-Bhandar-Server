@@ -9,7 +9,6 @@ const router = express.Router();
 
 router.post(
   '/',
-  auth(USER_ROLE.admin),
   validateRequest(CategoryValidation.categoryValidationSchema),
   CategoryControllers.createCategory,
 );
@@ -19,15 +18,10 @@ router.get('/:id', CategoryControllers.getSingleCategory);
 
 router.put(
   '/:id',
-  auth(USER_ROLE.admin),
   validateRequest(CategoryValidation.updateCategoryValidationSchema),
   CategoryControllers.updateCategory,
 );
 
-router.delete(
-  '/:id',
-  auth(USER_ROLE.admin),
-  CategoryControllers.deleteCategory,
-);
+router.delete('/:id', CategoryControllers.deleteCategory);
 
 export const CategoryRoutes = router;

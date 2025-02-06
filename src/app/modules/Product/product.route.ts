@@ -9,7 +9,6 @@ const router = express.Router();
 
 router.post(
   '/',
-  auth(USER_ROLE.admin),
   validateRequest(ProductValidations.productValidationSchema),
   ProductControllers.createProduct,
 );
@@ -20,11 +19,10 @@ router.get('/:id', ProductControllers.getSingleProduct);
 
 router.put(
   '/:id',
-  auth(USER_ROLE.admin),
   validateRequest(ProductValidations.updateProductValidationSchema),
   ProductControllers.updateProduct,
 );
 
-router.delete('/:id', auth(USER_ROLE.admin), ProductControllers.deleteProduct);
+router.delete('/:id', ProductControllers.deleteProduct);
 
 export const ProductRoutes = router;

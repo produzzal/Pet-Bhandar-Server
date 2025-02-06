@@ -24,6 +24,10 @@ const login = catchAsync(async (req: Request, res: Response) => {
     httpOnly: true,
     secure: config.node_env === 'production',
   });
+  res.cookie('accessToken', accessToken, {
+    httpOnly: true,
+    secure: config.node_env === 'production',
+  });
 
   sendResponse(res, {
     success: true,
@@ -34,7 +38,26 @@ const login = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
+const logout = catchAsync(async (req: Request, res: Response) => {
+  // Clear both accessToken and refreshToken cookies
+  res.clearCookie('accessToken', {
+    httpOnly: true,
+    secure: config.node_env === 'production',
+  });
+
+  res.clearCookie('refreshToken', {
+    httpOnly: true,
+    secure: config.node_env === 'production',
+  });
+  sendResponse(res, {
+    success: true,
+    statusCode: httpStatus.OK,
+    message: 'User logout successfully',
+  });
+});
+
 export const AuthControllers = {
   signup,
   login,
+  logout,
 };
